@@ -6,15 +6,19 @@
  */
 class Carro {
 
+    // constante - estatico 
+    const POTENCIA = 1.0;
+    const PESO = 1000;
+
     public $cor;
-    private $peso = 1000;
     private $combustivel = "gasolina";
-    private $quantCombustivel = 0;
+    protected $quantCombustivel = 0;
     private $velocidade = 0;
     private $kilometragem = 0;
-    private $potencia = 1.0;
     private $ligado = false;
     private $direcao = "centro";
+    private $chassi = "XYZ00123";
+    protected $valvulas = 8;
 
     /**
      * Construtor do carro(classe)
@@ -23,6 +27,7 @@ class Carro {
     public function __construct($cor = "Branco") {
 
         $this->cor = $cor;
+        $this->chassi = uniqid(); // self é um this para atributos estaticos
     }
 
     /**
@@ -47,7 +52,7 @@ class Carro {
      * Freia o carro
      */
     public function freiar() {
-        
+
         $this->acelerar(0);
     }
 
@@ -58,7 +63,7 @@ class Carro {
     public function acelerar($valor) {
 
 
-        $this->velocidade = $valor * $this->potencia;
+        $this->velocidade = $valor * self::POTENCIA;
         $this->alimentarCombustivel();
         $this->kilometragem += $this->velocidade;
     }
@@ -77,7 +82,7 @@ class Carro {
      * @param string $direcao - Valores permitidos: centro | direita | esquerda
      */
     public function virar($direcao) {
-        
+
         $this->direcao = $direcao;
     }
 
@@ -88,11 +93,32 @@ class Carro {
 
         if ($this->quantCombustivel > 0) {
 
-            $quant = $this->potencia * $this->peso * $this->velocidade;
+            $quant = static::POTENCIA * static:: PESO * $this->velocidade;
             $this->quantCombustivel -= $quant / 6000;
         } else {
             $this->desligar();
         }
+    }
+
+    /**
+     * Metodo estatico
+     */
+    static public function obterPotencia() {
+
+        return self::POTENCIA;
+    }
+
+    /**
+     * 
+     */
+    public function valvulas() {
+
+        return $this->valvulas;
+    }
+    
+    public function __toString() {
+        
+        return static::POTENCIA . " - " . static::PESO;
     }
 
 }
