@@ -1,8 +1,8 @@
 <pre>
 <?php
 
-require_once './Carro.php';
-require_once './Carro16.php';
+require_once 'Carro.php';
+require_once 'Carro16.php';
 
 $carro1 = new Carro16("Branco");
 $carro2 = new Carro();
@@ -19,21 +19,35 @@ $carro1->acelerar(80);
 $carro1->freiar(80);
 
 
-// acessando algo estatico (algo não instanciado)
+
+//acessando algo estatico
 //echo Carro::$chassi;
 //echo $carro1::$chassi . "\n";
 //echo $carro2::$chassi . "\n";
 //echo Carro16::POTENCIA;
-    
-    //echo $carro1->valvulas();
-    //echo $carro3->valvulas();
-    //echo $carro3->valvulas() = 12;
+//$carro1->teste();
 
-    echo $carro3;
-    echo $carro2;
+echo Carro16::obterPotencia();
 
+//echo $carro3->valvulas();
+//echo $carro3->voar("bem alto");
 
-//$carro2->cor = "Vermelho";
+echo $carro3->valvulas;
+//echo $carro2;
+
+//arro2::$cor = "Vermelho";
 var_dump($carro1);
 var_dump($carro2);
 var_dump($carro3);
+
+$nome = 'Edir';
+
+// função lambda
+$func = function() use ($nome) {
+  return $nome;  
+};
+
+// invocando closure
+echo $func();
+
+

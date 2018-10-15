@@ -1,124 +1,134 @@
 <?php
 
+namespace Montadora;
+
+use \Montadora\Motor\InterfaceMotor;
+
+require_once './Motor/InterfaceMotor.php';
+
 /**
  * Classe base para carros
- * @author João / Edir Elaborata
+ * @author Edir
+ * 
  */
-class Carro {
-
-    // constante - estatico 
+abstract class Carro
+{
+    
+    //constante - estatico
     const POTENCIA = 1.0;
     const PESO = 1000;
-
+    
     public $cor;
     private $combustivel = "gasolina";
     protected $quantCombustivel = 0;
     private $velocidade = 0;
     private $kilometragem = 0;
-    private $ligado = false;
+
     private $direcao = "centro";
     private $chassi = "XYZ00123";
     protected $valvulas = 8;
+    private $motor;
 
     /**
-     * Construtor do carro(classe)
+     * Construtor do carro
      * @param string $cor
      */
-    public function __construct($cor = "Branco") {
-
+    public function __construct($cor = "Branco", InterfaceMotor $motor) 
+    {
         $this->cor = $cor;
-        $this->chassi = uniqid(); // self é um this para atributos estaticos
+        $this->chassi = uniqid();
+        $this->motor = $motor;               
     }
+
 
     /**
      * Liga o carro
      */
-    public function ligar() {
-
-        if ($this->quantCombustivel > 0) {
-            $this->ligado = TRUE;
+    public function ligar()
+    {
+        if ($this->quantCombustivel > 0)
+        {
+            $this->motor->ligar();
         }
     }
-
+    
     /**
      * Desliga o carro
      */
-    public function desligar() {
-
-        $this->ligado = FALSE;
+    public function desligar()
+    {
+        $this->motor->desligar();
     }
-
+    
     /**
      * Freia o carro
      */
-    public function freiar() {
-
+    public function freiar()
+    {
         $this->acelerar(0);
     }
-
+    
     /**
-     * Acelera o carro
-     * @param float $valor Faz o carro andar e consequentemente gastar combustível.
+     * Acelera o motor
      */
-    public function acelerar($valor) {
-
-
+    public function acelerar($valor)
+    {
+       
         $this->velocidade = $valor * self::POTENCIA;
         $this->alimentarCombustivel();
         $this->kilometragem += $this->velocidade;
+       
     }
-
+    
     /**
-     * Abastece com combustivel
-     * @param float $quant - Quantidade em litros
+     * abastece com combustivel
+     * @param float $quant Quantidade em litros
      */
-    public function abastecer($quant) {
-
+    public function abastecer($quant)
+    {
         $this->quantCombustivel += $quant;
     }
-
+    
     /**
-     * Gira as rodas
-     * @param string $direcao - Valores permitidos: centro | direita | esquerda
+     * gira as rodas
+     * @param string $direcao Valores permitido: centro | direita | esquerda
      */
-    public function virar($direcao) {
-
+    public function virar($direcao)
+    {
         $this->direcao = $direcao;
     }
-
+    
     /**
-     * Bomba de combustível
+     * bomba de combustivel
      */
-    private function alimentarCombustivel() {
-
-        if ($this->quantCombustivel > 0) {
-
-            $quant = static::POTENCIA * static:: PESO * $this->velocidade;
+    private function alimentarCombustivel()
+    {
+        if ($this->quantCombustivel > 0)
+        {
+            $quant = static::POTENCIA * static::PESO * $this->velocidade ;
+        
             $this->quantCombustivel -= $quant / 6000;
         } else {
             $this->desligar();
         }
+      
     }
-
+    
     /**
-     * Metodo estatico
+     * metodo estatico
      */
-    static public function obterPotencia() {
-
-        return self::POTENCIA;
+    static public function obterPotencia()
+    {
+        return static::POTENCIA;
     }
-
-    /**
-     * 
-     */
-    public function valvulas() {
-
+    
+    public function valvulas()
+    {
         return $this->valvulas;
     }
     
-    public function __toString() {
-        
-        return static::POTENCIA . " - " . static::PESO;
+    public function __toString() 
+    {
+        return static::POTENCIA . " - " .static::PESO;
     }
-
 }
