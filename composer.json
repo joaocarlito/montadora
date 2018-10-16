@@ -1,0 +1,6 @@
+{
+    "name": "joaocarlito/montadora",
+    "require": {
+        "psr/log": "^1.0"
+    }
+}

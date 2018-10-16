@@ -103,14 +103,24 @@ abstract class Carro
      */
     private function alimentarCombustivel()
     {
+       
+        
         if ($this->quantCombustivel > 0)
         {
+             if($this->quantCombustivel < 5)
+        {
+            throw new Motor\Erro("Na Reserva");
+        }
+            
             $quant = static::POTENCIA * static::PESO * $this->velocidade ;
         
             $this->quantCombustivel -= $quant / 6000;
         } else {
             $this->desligar();
+            throw new \Exception("Motor Desligado");
         }
+        
+        
       
     }
     
